@@ -8,6 +8,7 @@ import (
 
 const variableFieldsPerRecordValue = -1
 
+// Parse receives an argument raw bytes of a statement file from Kasikorn, i.e. CSV file from Kasikorn and parses it.
 func Parse(payload []byte) (*Statement, error) {
 	records, errReadingRecords := parseBytes(payload)
 	if errReadingRecords != nil {

@@ -68,6 +68,7 @@ type postFieldNames struct {
 	Period        string
 	SelPrevMonth  string
 	PdTxtParam    string
+	TxtParam      string
 }
 
 func GetFieldNames() postFieldNames {
@@ -81,6 +82,7 @@ func GetFieldNames() postFieldNames {
 		Period:        "period",
 		SelPrevMonth:  "selPrevMonth",
 		PdTxtParam:    "_pd",
+		TxtParam:      "txtParam",
 	}
 }
 

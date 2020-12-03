@@ -1,9 +1,7 @@
 package web
 
 import (
-	"io/ioutil"
 	"log"
-	"net/http"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/login"
 )
@@ -49,44 +47,5 @@ func (session *Session) Login() error {
 	if errCheckingSession != nil {
 		return errCheckingSession
 	}
-	log.Println("ession worked")
-
-	//
-	//errVisintgHome := visitHome(session.cookieJar)
-	//if errVisintgHome != nil {
-	//	log.Println("Vising home FAILED")
-	//} else {
-	//	log.Println("Visiting home worked")
-	//}
-
-	//token, errStrangeSecWel := login.DoStrangeSecurityWelcome(txtParam, session.cookieJar)
-	//if errStrangeSecWel != nil {
-	//	return errStrangeSecWel
-	//}
-	return nil
-}
-
-func visitHome(cookies http.CookieJar) error {
-	req, errCreatiReq := http.NewRequest(http.MethodGet, kasikornURLs.Home, nil)
-	if errCreatiReq != nil {
-		return errCreatiReq
-	}
-	httpClient := http.Client{
-		Jar: cookies,
-	}
-	resp, errDoingReq := httpClient.Do(req)
-	if errDoingReq != nil {
-		return errDoingReq
-	}
-	payload, errReadingPayload := ioutil.ReadAll(resp.Body)
-	if errReadingPayload != nil {
-		return errReadingPayload
-	}
-	payloadAsString := string(payload)
-	log.Printf("Visited home, %d bytes", len(payloadAsString))
-	//tokenCandidate := findToken(payloadAsString)
-	//if tokenCandidate != nil {
-	//	log.Printf("Found token visiting home: %s", *tokenCandidate)
-	//}
 	return nil
 }

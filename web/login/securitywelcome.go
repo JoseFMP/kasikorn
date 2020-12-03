@@ -13,7 +13,7 @@ import (
 func DoSecurityWelcome(txtParam string, cookies http.CookieJar) (string, error) {
 
 	reqPayload := map[string]string{
-		"txtParam": txtParam,
+		postFormFields.TxtParam: txtParam,
 	}
 	req, errCreatingReq := utils.CreatePostFormReq(reqPayload, eBankURLs.SecurityWelcome)
 
@@ -27,7 +27,7 @@ func DoSecurityWelcome(txtParam string, cookies http.CookieJar) (string, error) 
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			redirected = true
 			log.Printf("Secuirty welcome doing redirect to %s", req.URL.String())
-			return nil //http.ErrUseLastResponse
+			return nil
 		},
 	}
 
@@ -53,47 +53,4 @@ func DoSecurityWelcome(txtParam string, cookies http.CookieJar) (string, error) 
 	return "", fmt.Errorf("Something screwed up, not redirected in welcome security")
 }
 
-func DoStrangeSecurityWelcome(txtParam string, cookies http.CookieJar) (string, error) {
-
-	reqPayload := map[string]string{
-		postFormFields.PdTxtParam: fmt.Sprintf(`txtParam=%s`, txtParam),
-	}
-	req, errCreatingReq := utils.CreateMultipartReq(reqPayload, eBankURLs.SecurityWelcome)
-
-	if errCreatingReq != nil {
-		return "", errCreatingReq
-	}
-
-	redirected := false
-	httpClient := http.Client{
-		Jar: cookies,
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			redirected = true
-			log.Printf("DoStrangeSecurityWelcome doing redirect to %s", req.URL.String())
-			return nil //http.ErrUseLastResponse
-		},
-	}
-
-	resp, errDoingReq := httpClient.Do(req)
-	if errDoingReq != nil {
-		return "", errDoingReq
-	}
-	payload, errReadingPayload := ioutil.ReadAll(resp.Body)
-	if errReadingPayload != nil {
-		return "", errReadingPayload
-	}
-	payloadAsString := string(payload)
-	tokenCandidate := token.FindToken(payloadAsString)
-	if tokenCandidate == nil {
-		return "", fmt.Errorf("DoStrangeSecurityWelcome welcome did not find any token")
-	}
-	return *tokenCandidate, nil
-	//if redirected {
-
-	//}
-
-	return "", fmt.Errorf("Something screwed up, not redirected in DoStrangeSecurityWelcome")
-}
-
 var postFormFields = utils.GetFieldNames()
-var postFormValues = utils.GetFieldValues()

@@ -10,8 +10,6 @@ import (
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-const sixMonths = time.Hour
-
 func validateInput(from time.Time, to time.Time) error {
 
 	if from.IsZero() {
@@ -36,41 +34,43 @@ func validateInput(from time.Time, to time.Time) error {
 	return nil
 }
 
-func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber string) error {
+func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber string) (*statement.Statement, error) {
 
 	errInput := validateInput(from, to)
 	if errInput != nil {
-		return errInput
+		return nil, errInput
 	}
 	session.tokenLock.Lock()
 	if session.token == nil {
-		return fmt.Errorf("No token in session")
+		return nil, fmt.Errorf("No token in session")
 	}
 	targetAccount, accountAvailable := session.accounts[accountNumber]
 	if !accountAvailable {
-		return fmt.Errorf("Account %s not found", accountNumber)
+		return nil, fmt.Errorf("Account %s not found", accountNumber)
 	}
 	newToken, errSelectingAccount := statements.SelectAccountForStatementInquiry(from, to, targetAccount.ID, *session.token, session.cookieJar)
 
 	if errSelectingAccount != nil {
 		session.tokenLock.Unlock()
-		return errSelectingAccount
+		return nil, errSelectingAccount
 	}
 	session.token = &newToken
 	session.tokenLock.Unlock()
-
-	log.Println("Selected account correctly")
 
 	session.tokenLock.Lock()
 	statementPayload, errDownloading := statements.RequestDownload(from, to, *targetAccount, session.cookieJar, *session.token)
 	if errDownloading != nil {
 		session.tokenLock.Unlock()
 
-		return errDownloading
+		return nil, errDownloading
 	}
 	session.tokenLock.Unlock()
 
 	log.Printf("Downloaded %d bytes", len(statementPayload))
-	statement.Parse(statementPayload)
-	return nil
+	statement, errParsing := statement.Parse(statementPayload)
+	if errParsing != nil {
+		return nil, errParsing
+	}
+
+	return statement, nil
 }

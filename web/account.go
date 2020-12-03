@@ -64,7 +64,6 @@ func findAccounts(cookies http.CookieJar) ([]*account.Account, string, error) {
 	return accounts, *candidateToken, nil
 }
 
-const patternStart = `<option value="`
 const patternRegExp = `<option value="\d{14}">\d{3}-\d{1}-\d{5}-\d{1}\s.*</option>`
 
 func getAccountRegexp() *regexp.Regexp {
