@@ -3,6 +3,7 @@ package web
 import (
 	"log"
 
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/login"
 )
 
@@ -41,7 +42,7 @@ func (session *Session) Login() error {
 	if errRefreshing != nil {
 		return errRefreshing
 	}
-	logAccounts(session.accounts)
+	account.LogAccounts(session.accounts)
 
 	errCheckingSession := checkSession(session.cookieJar)
 	if errCheckingSession != nil {

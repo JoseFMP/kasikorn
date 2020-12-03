@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"regexp"
-	"strings"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
@@ -64,15 +63,15 @@ func findAccounts(cookies http.CookieJar) ([]*account.Account, string, error) {
 	return accounts, *candidateToken, nil
 }
 
-const patternRegExp = `<option value="\d{14}">\d{3}-\d{1}-\d{5}-\d{1}\s.*</option>`
+func getAccountOptionRegexp() *regexp.Regexp {
 
-func getAccountRegexp() *regexp.Regexp {
+	patternRegExp := fmt.Sprintf(`<option value="%s">%s\s.*</option>`, account.AccountIDPattern, account.AccountNumberPattern)
 	return regexp.MustCompile(patternRegExp)
 }
 
 func parseAccountsInPayload(payload string) []*account.Account {
 	accounts := make([]*account.Account, 0)
-	matches := getAccountRegexp().FindAllString(payload, -1)
+	matches := getAccountOptionRegexp().FindAllString(payload, -1)
 	for _, m := range matches {
 		candidateAccount := processCandidateAccount(m)
 		if candidateAccount != nil {
@@ -82,26 +81,24 @@ func parseAccountsInPayload(payload string) []*account.Account {
 	return accounts
 }
 
-const accountIdPattern = `value="\d{14}"`
-const accountNumberPattern = `>\d{3}-\d{1}-\d{5}-\d{1}`
-
-func getAccountIDRegexp() *regexp.Regexp {
-	return regexp.MustCompile(accountIdPattern)
+func getAccountIDInHTMLRegexp() *regexp.Regexp {
+	accountIDInHTMLPatter := fmt.Sprintf(`value="%s"`, account.AccountIDPattern)
+	return regexp.MustCompile(accountIDInHTMLPatter)
 }
 
-func getAccountNumberRegexp() *regexp.Regexp {
-	return regexp.MustCompile(accountNumberPattern)
+func getAccountNumberInHTMLRegexp() *regexp.Regexp {
+
+	accountNumberInHTMLPattern := fmt.Sprintf(`>%s`, account.AccountNumberPattern)
+	return regexp.MustCompile(accountNumberInHTMLPattern)
 }
 
 func processCandidateAccount(payload string) *account.Account {
 
-	idChunk := getAccountIDRegexp().FindString(payload)
-	idChunk = strings.ReplaceAll(idChunk, `value="`, "")
-	id := strings.ReplaceAll(idChunk, `"`, "")
+	idChunk := getAccountIDInHTMLRegexp().FindString(payload)
+	id := account.GetAccountIDRegexp().FindString(idChunk)
 
-	numberChunk := getAccountNumberRegexp().FindString(payload)
-	numberChunk = strings.ReplaceAll(numberChunk, `>`, "")
-	number := strings.ReplaceAll(numberChunk, ` `, "")
+	numberChunk := getAccountNumberInHTMLRegexp().FindString(payload)
+	number := account.GetAccountNumberRegexp().FindString(numberChunk)
 
 	if id != "" && number != "" {
 		return &account.Account{
@@ -111,13 +108,4 @@ func processCandidateAccount(payload string) *account.Account {
 	}
 
 	return nil
-}
-
-func logAccounts(accountsToLog map[string]*account.Account) {
-	finalMessage := ""
-	for _, a := range accountsToLog {
-		messageThisAccount := fmt.Sprintf("ID: %s, number: %s", a.ID, a.Number)
-		finalMessage = fmt.Sprintf("%s\n%s", finalMessage, messageThisAccount)
-	}
-	log.Println(finalMessage)
 }
