@@ -1,0 +1,30 @@
+{
+    "go.lintTool": "golangci-lint",
+    "editor.wordWrap": "on",
+    "[go]":{
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true,
+            "source.fixAll": true,
+        },
+        "editor.codeLens": true,
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": true,
+            "strings": true,
+        },
+        "editor.suggest.showIcons": true,
+    },
+    "go.delveConfig": {
+        "dlvLoadConfig": {
+            "followPointers": true,
+            "maxVariableRecurse": 3,
+            "maxStringLen": 64000,
+            "maxArrayValues": 64,
+            "maxStructFields": -1
+        },
+        "apiVersion": 2,
+        "showGlobalVariables": false
+    }
+}
