@@ -2,8 +2,10 @@ package statement
 
 import (
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
+	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
@@ -32,7 +34,7 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 			if errParsing != nil {
 				return nil, errParsing
 			}
-			result.AsOf = *asOf
+			result.AsOf = asOf
 		} else {
 
 			switch firstColumn {
@@ -52,6 +54,21 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 					return nil, fmt.Errorf("Could not parse account type")
 				}
 				result.Account.Type = accountType
+			case rowHeaders.StatementPeriod:
+				dates := strings.Split(record[1], "-")
+				fromAsString := dates[0]
+				toAsString := dates[1]
+
+				from, errParsingFrom := utils.PlainDateStringToThaiTime(fromAsString)
+				if errParsingFrom != nil {
+					log.Printf("Error parsing from: %s", errParsingFrom)
+				}
+				to, errParsingTo := utils.PlainDateStringToThaiTime(toAsString)
+				if errParsingTo != nil {
+					log.Printf("Error parsing to: %s", errParsingTo)
+				}
+				result.Period.From = from
+				result.Period.To = to
 			}
 
 		}
@@ -59,4 +76,14 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 	}
 
 	return &result, nil
+}
+
+type StatementMeta struct {
+	DownloadedOn time.Time
+	AsOf         time.Time
+	Account      account.Account
+	Period       struct {
+		From time.Time
+		To   time.Time
+	}
 }

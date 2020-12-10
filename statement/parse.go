@@ -19,8 +19,16 @@ func Parse(payload []byte) (*Statement, error) {
 	if errParsingMeta != nil {
 		return nil, errParsingMeta
 	}
+
+	transactionFields := records[6]
+	hasCheckNumber := true
+	if len(transactionFields) == 7 {
+		hasCheckNumber = false
+	}
+	transactions := parseBody(records[7:], hasCheckNumber)
 	return &Statement{
-		Meta: *recordsMeta,
+		Meta:         *recordsMeta,
+		Transactions: transactions,
 	}, nil
 }
 
@@ -31,7 +39,6 @@ func parseBytes(payload []byte) ([][]string, error) {
 
 	r := csv.NewReader(bytes.NewReader(payload))
 	r.FieldsPerRecord = variableFieldsPerRecordValue // variable fields per record
-
 	records, errReadingRecords := r.ReadAll()
 	if errReadingRecords != nil {
 		return nil, errReadingRecords

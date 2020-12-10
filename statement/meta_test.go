@@ -4,9 +4,11 @@ import (
 	"testing"
 	"time"
 
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCanParseMeta(t *testing.T) {
@@ -16,21 +18,33 @@ func TestCanParseMeta(t *testing.T) {
 		[]string{"Account Number", "032-1-23971-4"},
 		[]string{"Account Name", "N.O.O.N PROPERTY MANAGEMENT CO.,LTD."},
 		[]string{"Type", "Savings Account"},
+		[]string{"Statement Period", "01/12/2020 - 09/12/2020"},
 	}
 
 	meta, errParsing := parseRecordsMeta(mockRecords)
 
-	assert.Nil(t, errParsing)
-	assert.NotNil(t, meta)
-	year, month, day := meta.AsOf.Date()
-	assert.Equal(t, 2020, year)
-	assert.Equal(t, time.Month(12), month)
-	assert.Equal(t, 2, day)
+	require.Nil(t, errParsing)
+	require.NotNil(t, meta)
 
-	assert.NotNil(t, meta.Account)
-	assert.Equal(t, "032-1-23971-4", meta.Account.Number)
-	assert.Equal(t, "N.O.O.N PROPERTY MANAGEMENT CO.,LTD.", meta.Account.Name)
-	assert.Equal(t, account.GetAllAccountTypes().SavingsAccount, meta.Account.Type)
+	year, month, day := meta.AsOf.Date()
+	require.Equal(t, 2020, year)
+	require.Equal(t, time.Month(12), month)
+	require.Equal(t, 2, day)
+
+	require.NotNil(t, meta.Account)
+	require.Equal(t, "032-1-23971-4", meta.Account.Number)
+	require.Equal(t, "N.O.O.N PROPERTY MANAGEMENT CO.,LTD.", meta.Account.Name)
+	require.Equal(t, account.GetAllAccountTypes().SavingsAccount, meta.Account.Type)
+
+	expectedFrom := time.Date(2020, time.December, 1, 0, 0, 0, 0, utils.GetThailandTimeZone())
+	expectedFrom = expectedFrom.In(utils.GetThailandTimeZone())
+	require.Equal(t, meta.Period.From.Unix(), expectedFrom.Unix())
+	require.Equal(t, meta.Period.From, expectedFrom)
+
+	expectedTo := time.Date(2020, time.December, 9, 0, 0, 0, 0, utils.GetThailandTimeZone())
+	expectedTo = expectedTo.In(utils.GetThailandTimeZone())
+	require.Equal(t, meta.Period.To.Unix(), expectedTo.Unix())
+	require.Equal(t, meta.Period.To, expectedTo)
 
 }
 
@@ -39,10 +53,15 @@ func TestCanParseBytes(t *testing.T) {
 	bytesMock := []byte(mockStatement)
 	records, errParsing := parseBytes(bytesMock)
 
-	assert.Nil(t, errParsing)
-	assert.NotNil(t, records)
-	assert.Len(t, records[0], 1)
-	assert.Len(t, records[1], 2)
+	require.Nil(t, errParsing)
+	require.NotNil(t, records)
+	require.Len(t, records[0], 1)
+	require.Len(t, records[1], 2)
+	//require.Len(t, records[2], 2)
+	//require.Len(t, records[3], 2)
+	require.Len(t, records[4], 2)
+	require.Len(t, records[7], 8)
+
 }
 
 const mockStatement = `

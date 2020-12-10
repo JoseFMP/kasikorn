@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -20,21 +21,30 @@ func GetThailandTimeZone() *time.Location {
 	return location
 }
 
-func PlainDateStringToThaiTime(plainDate string) (*time.Time, error) {
+func PlainDateStringToThaiTime(plainDate string) (time.Time, error) {
 	return parsePlainStringThaiWorld(plainDate, "02/01/2006")
 }
 
-func PlainDateTimeStringToThaiTime(plainDate string) (*time.Time, error) {
+func PlainDateTimeStringToThaiTime(plainDate string) (time.Time, error) {
 	return parsePlainStringThaiWorld(plainDate, "02/01/2006 15:04:05")
 
 }
 
-func parsePlainStringThaiWorld(plainDate string, layout string) (*time.Time, error) {
-	layoutToUse := fmt.Sprintf("%s +0700", layout)
-	result, errParsing := time.Parse(layout, layoutToUse)
+func parsePlainStringThaiWorld(plainDate string, layout string) (time.Time, error) {
+
+	plainDateCleaned := strings.Trim(plainDate, " ")
+	layoutToUse := fmt.Sprintf("%s -0700", layout)
+	timeToUse := fmt.Sprintf("%s +0700", plainDateCleaned)
+
+	result, errParsing := time.Parse(layoutToUse, timeToUse)
 	if errParsing != nil {
-		return nil, errParsing
+		return time.Time{}, errParsing
 	}
 	result = result.In(GetThailandTimeZone())
-	return &result, nil
+	return result, nil
+}
+
+type Period struct {
+	From time.Time
+	To   time.Time
 }
