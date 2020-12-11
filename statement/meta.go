@@ -79,11 +79,11 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 }
 
 type StatementMeta struct {
-	DownloadedOn time.Time
-	AsOf         time.Time
-	Account      account.Account
+	DownloadedOn time.Time       `json:"downloadedOn"`
+	AsOf         time.Time       `json:"asOf"`
+	Account      account.Account `json:"account"`
 	Period       struct {
-		From time.Time
-		To   time.Time
-	}
+		From time.Time `json:"from"`
+		To   time.Time `json:"to"`
+	} `json:"period"`
 }

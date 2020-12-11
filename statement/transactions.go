@@ -93,13 +93,13 @@ func parseTransaction(record []string, hasCheckNumber bool) (Transaction, error)
 }
 
 type Transaction struct {
-	Date                  time.Time
-	Type                  TransactionType
-	AmountTHB             float64
-	OutstandingBalanceTHB float64
-	Channel               ServiceChannel
-	Note                  string
-	CheckNumber           *string
+	Date                  time.Time       `json:"date"`
+	Type                  TransactionType `json:"type"`
+	AmountTHB             float64         `json:"amountTHB"`
+	OutstandingBalanceTHB float64         `json:"outstandingBalanceTHB"`
+	Channel               ServiceChannel  `json:"channel"`
+	Note                  string          `json:"note"`
+	CheckNumber           *string         `json:"checkNumber"`
 }
 
 type ServiceChannel string
