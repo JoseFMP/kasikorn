@@ -1,22 +1,28 @@
 package account
 
+import (
+	"strings"
+)
+
 type AccountType string
 type AllAccountTypes struct {
-	SavingsAccount AccountType
-	CurrentAccount AccountType
+	Savings AccountType
+	Current AccountType
+	Deposit AccountType
 }
 
 func GetAllAccountTypes() AllAccountTypes {
 	return AllAccountTypes{
-		SavingsAccount: "Savings Account",
-		CurrentAccount: "Current Account",
+		Savings: "Savings",
+		Current: "Current",
+		Deposit: "Deposit",
 	}
 }
 
 func getAllAccountTypesMap() map[string]AccountType {
 	return map[string]AccountType{
-		string(accountTypes.SavingsAccount): accountTypes.SavingsAccount,
-		string(accountTypes.CurrentAccount): accountTypes.CurrentAccount,
+		string(accountTypes.Savings): accountTypes.Savings,
+		string(accountTypes.Current): accountTypes.Current,
 	}
 }
 
@@ -24,5 +30,8 @@ var accountTypes = GetAllAccountTypes()
 var accountTypesMap = getAllAccountTypesMap()
 
 func GetAccountType(accountTypeAsString string) AccountType {
-	return accountTypesMap[accountTypeAsString]
+
+	cleanedAccountType := strings.ReplaceAll(accountTypeAsString, "Account", "")
+	cleanedAccountType = strings.ReplaceAll(cleanedAccountType, " ", "")
+	return accountTypesMap[cleanedAccountType]
 }

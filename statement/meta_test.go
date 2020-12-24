@@ -32,9 +32,9 @@ func TestCanParseMeta(t *testing.T) {
 	require.Equal(t, 2, day)
 
 	require.NotNil(t, meta.Account)
-	require.Equal(t, "032-1-23971-4", meta.Account.Number)
+	require.Equal(t, account.AccountNumber("032-1-23971-4"), meta.Account.Number)
 	require.Equal(t, "N.O.O.N PROPERTY MANAGEMENT CO.,LTD.", meta.Account.Name)
-	require.Equal(t, account.GetAllAccountTypes().SavingsAccount, meta.Account.Type)
+	require.Equal(t, account.GetAllAccountTypes().Savings, meta.Account.Type)
 
 	expectedFrom := time.Date(2020, time.December, 1, 0, 0, 0, 0, utils.GetThailandTimeZone())
 	expectedFrom = expectedFrom.In(utils.GetThailandTimeZone())
