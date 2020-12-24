@@ -8,11 +8,12 @@ import (
 	"strings"
 	"time"
 
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID string, tokenToSend string, cookies http.CookieJar) (string, error) {
+func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, error) {
 	payload := getSelectStatementPayload(from, to, accountID, tokenToSend)
 	req, errCreatingReq := utils.CreatePostFormReq(payload, eBankURLs.StatementInquiry)
 	if errCreatingReq != nil {
@@ -66,11 +67,11 @@ func setHeadersSelectAccount(header *http.Header) {
 	header.Add("Sec-Fetch-Site", "same-origin")
 }
 
-func getSelectStatementPayload(from time.Time, to time.Time, accountID string, tokenToSend string) map[string]string {
+func getSelectStatementPayload(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string) map[string]string {
 	values := map[string]string{
 		postFormFields.AccountDesc: "",
 		postFormFields.Action:      postFormValues.ActionSelect,
-		postFormFields.AccountNo:   accountID,
+		postFormFields.AccountNo:   string(accountID),
 		postFormFields.Period:      "3",
 		token.Name:                 tokenToSend,
 	}

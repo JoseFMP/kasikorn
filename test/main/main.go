@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/config"
@@ -13,7 +14,7 @@ import (
 func main() {
 
 	// Fill in!
-	savingsAccountNumber := ``
+	savingsAccountNumber := account.AccountNumber(``)
 	configuration := config.Config{
 		UserName: "",
 		Password: "",

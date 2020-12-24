@@ -19,7 +19,7 @@ type Session struct {
 	token     *string
 	tokenLock sync.RWMutex
 	cookieJar http.CookieJar
-	accounts  map[string]*account.Account
+	accounts  map[account.AccountNumber]*account.Account
 }
 
 func InitSession(config config.Config) *Session {
@@ -33,7 +33,7 @@ func InitSession(config config.Config) *Session {
 	session := &Session{
 		userName:  config.UserName,
 		password:  config.Password,
-		accounts:  make(map[string]*account.Account),
+		accounts:  make(map[account.AccountNumber]*account.Account),
 		cookieJar: cookieJar,
 	}
 	return session

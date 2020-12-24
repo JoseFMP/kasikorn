@@ -43,7 +43,7 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 				if accountNumber == "" {
 					return nil, fmt.Errorf("Account number could not be parsed")
 				}
-				result.Account.Number = accountNumber
+				result.Account.Number = account.AccountNumber(accountNumber)
 			case rowHeaders.AccountName:
 				result.Account.Name = record[1]
 			case rowHeaders.AccountNickName:

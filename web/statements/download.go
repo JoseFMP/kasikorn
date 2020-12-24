@@ -58,11 +58,11 @@ func RequestDownload(from time.Time,
 
 var eBankURLs = utils.GetAllEbankURLs()
 
-func getDownloadRequestPayload(from time.Time, to time.Time, accountID string, accountNumber string, tokenToSend string) map[string]string {
+func getDownloadRequestPayload(from time.Time, to time.Time, accountID account.AccountID, accountNumber account.AccountNumber, tokenToSend string) map[string]string {
 	values := map[string]string{
 		token.Name:                   tokenToSend,
-		postFormFields.AccountNo:     accountID,
-		postFormFields.AccountNumber: accountNumber,
+		postFormFields.AccountNo:     string(accountID),
+		postFormFields.AccountNumber: string(accountNumber),
 		postFormFields.SelAccountNo:  formatAccountNumberStrange(accountID, accountNumber),
 		postFormFields.AccountDesc:   "",
 		postFormFields.Action:        postFormValues.ActionDownloadCa,
@@ -92,10 +92,8 @@ func setDownloadRequestHeaders(header *http.Header) {
 }
 
 //20161006245912|0173283466|null|D|1152|0|null|THB|
-func formatAccountNumberStrange(accountID string, accountNumber string) string {
+func formatAccountNumberStrange(accountID account.AccountID, accountNumber account.AccountNumber) string {
 
-	accountNumberNoDashes := strings.ReplaceAll(accountNumber, "-", "")
+	accountNumberNoDashes := strings.ReplaceAll(string(accountNumber), "-", "")
 	return fmt.Sprintf(`%s|%s|null|D|1152|0|null|THB|`, accountID, accountNumberNoDashes)
-
-	//return fmt.Sprintf("|%s||||||", accountNumberNoDashes)
 }

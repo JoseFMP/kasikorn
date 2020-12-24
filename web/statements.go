@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/statement"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/statements"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
@@ -34,7 +35,7 @@ func validateInput(from time.Time, to time.Time) error {
 	return nil
 }
 
-func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber string) (*statement.Statement, error) {
+func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber account.AccountNumber) (*statement.Statement, error) {
 
 	errInput := validateInput(from, to)
 	if errInput != nil {

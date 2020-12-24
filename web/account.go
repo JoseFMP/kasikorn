@@ -102,8 +102,8 @@ func processCandidateAccount(payload string) *account.Account {
 
 	if id != "" && number != "" {
 		return &account.Account{
-			ID:     id,
-			Number: number,
+			ID:     account.AccountID(id),
+			Number: account.AccountNumber(number),
 		}
 	}
 

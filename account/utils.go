@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func LogAccounts(accountsToLog map[string]*Account) {
+func LogAccounts(accountsToLog map[AccountNumber]*Account) {
 	finalMessage := ""
 	for _, a := range accountsToLog {
 		messageThisAccount := fmt.Sprintf("ID: %s, number: %s", a.ID, a.Number)
