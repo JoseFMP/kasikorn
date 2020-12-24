@@ -3,8 +3,8 @@ package web
 import (
 	"log"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/login"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/login"
 )
 
 func (session *Session) Login() error {

@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/token"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
 )
 
 func DoSecurityWelcome(txtParam string, cookies http.CookieJar) (string, error) {

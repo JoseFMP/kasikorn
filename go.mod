@@ -1,4 +1,4 @@
-module dev.azure.com/noon-homa/Kasikorn/_git/kasikorn
+module dev.azure.com/noon-homa/Kasikorn/kasikorn.git
 
 go 1.14
 

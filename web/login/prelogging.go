@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/token"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
 )
 
 func DoPreloggin(cookiesJar http.CookieJar) (string, error) {

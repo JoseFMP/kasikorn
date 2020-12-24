@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
 )
 
 func parseBody(records [][]string, hasCheckNumber bool) []Transaction {
