@@ -105,31 +105,34 @@ type Transaction struct {
 type ServiceChannel string
 type TransactionType string
 type AllTransactionTypes struct {
-	CashDepositNB         TransactionType
-	ChequeMoneyTransferNB TransactionType
-	TransferWithdrawalNB  TransactionType
+	CashDeposit         TransactionType
+	ChequeMoneyTransfer TransactionType
+	TransferWithdrawal  TransactionType
 }
 
 func GetAllTransactionTypes() AllTransactionTypes {
 	return AllTransactionTypes{
-		CashDepositNB:         "Cash Deposit NB",
-		ChequeMoneyTransferNB: "Cheque/Money Transfer NB",
-		TransferWithdrawalNB:  "Transfer Withdrawal NB",
+		CashDeposit:         "Cash Deposit",
+		ChequeMoneyTransfer: "Cheque/Money Transfer",
+		TransferWithdrawal:  "Transfer Withdrawal",
 	}
 }
 
 func GetAllTransactionTypesMap() map[string]TransactionType {
 	allTransactionTypes := GetAllTransactionTypes()
 	return map[string]TransactionType{
-		string(allTransactionTypes.CashDepositNB):         (allTransactionTypes.CashDepositNB),
-		string(allTransactionTypes.ChequeMoneyTransferNB): allTransactionTypes.ChequeMoneyTransferNB,
-		string(allTransactionTypes.TransferWithdrawalNB):  allTransactionTypes.TransferWithdrawalNB,
+		string(allTransactionTypes.CashDeposit):         (allTransactionTypes.CashDeposit),
+		string(allTransactionTypes.ChequeMoneyTransfer): allTransactionTypes.ChequeMoneyTransfer,
+		string(allTransactionTypes.TransferWithdrawal):  allTransactionTypes.TransferWithdrawal,
 	}
 }
 
 var allTransactionTypesMap = GetAllTransactionTypesMap()
 
 func transactionTypeFromString(asString string) *TransactionType {
+	asString = strings.ReplaceAll(asString, " NB", "")
+	//asString = strings.ReplaceAll(asString, " ", "")
+
 	tt, exists := allTransactionTypesMap[asString]
 	if !exists {
 		return nil
