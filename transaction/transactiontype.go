@@ -4,17 +4,22 @@ import "strings"
 
 type TransactionType string
 type AllTransactionTypes struct {
-	TransferDeposit      TransactionType
-	PaymentReceived      TransactionType
-	CashWithdrawal       TransactionType
-	ClearingCheque       TransactionType
-	CashDeposit          TransactionType
-	ChequeMoneyTransfer  TransactionType
-	ChequeWithdrawal     TransactionType
-	TransferWithdrawal   TransactionType
-	Commission           TransactionType
-	LetterCredit         TransactionType
-	InterestDeposit      TransactionType
+	TransferDeposit TransactionType
+	InterestDeposit TransactionType
+	CashDeposit     TransactionType
+
+	PaymentReceived TransactionType
+
+	CashWithdrawal     TransactionType
+	TransferWithdrawal TransactionType
+	ChequeWithdrawal   TransactionType
+
+	ClearingCheque      TransactionType
+	ChequeMoneyTransfer TransactionType
+
+	Commission   TransactionType
+	LetterCredit TransactionType
+
 	WitholdingTaxPayable TransactionType
 }
 
