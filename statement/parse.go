@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
+
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/transaction"
 )
 
 const variableFieldsPerRecordValue = -1
@@ -25,7 +27,7 @@ func Parse(payload []byte) (*Statement, error) {
 	if len(transactionFields) == 7 {
 		hasCheckNumber = false
 	}
-	transactions := parseBody(records[7:], hasCheckNumber)
+	transactions := transaction.Parse(records[7:], hasCheckNumber)
 	return &Statement{
 		Meta:         *recordsMeta,
 		Transactions: transactions,

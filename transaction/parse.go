@@ -1,16 +1,13 @@
-package statement
+package transaction
 
 import (
 	"fmt"
 	"log"
-	"strconv"
-	"strings"
-	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
 )
 
-func parseBody(records [][]string, hasCheckNumber bool) []Transaction {
+func Parse(records [][]string, hasCheckNumber bool) []Transaction {
 
 	transactions := make([]Transaction, 0)
 
@@ -90,27 +87,4 @@ func parseTransaction(record []string, hasCheckNumber bool) (Transaction, error)
 		Note:                  record[6],
 		CheckNumber:           checkNumber,
 	}, nil
-}
-
-type Transaction struct {
-	Date                  time.Time       `json:"date"`
-	Type                  TransactionType `json:"type"`
-	AmountTHB             float64         `json:"amountTHB"`
-	OutstandingBalanceTHB float64         `json:"outstandingBalanceTHB"`
-	Channel               ServiceChannel  `json:"channel"`
-	Note                  string          `json:"note"`
-	CheckNumber           *string         `json:"checkNumber"`
-}
-
-type ServiceChannel string
-
-func parseKasikornAmount(amountAsString string) (float64, error) {
-
-	cleanedAmount := strings.ReplaceAll(amountAsString, ",", "")
-
-	amount, errParsing := strconv.ParseFloat(cleanedAmount, 64)
-	if errParsing != nil {
-		return 0, errParsing
-	}
-	return amount, nil
 }
