@@ -7,6 +7,8 @@ import (
 	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/login"
 )
 
+const findTextParamMaxRetries = 5
+
 func (session *Session) Login() error {
 
 	tokenId, errDoingPrelogging := login.DoPreloggin(session.cookieJar)
@@ -22,11 +24,16 @@ func (session *Session) Login() error {
 
 	var txtParam string
 	var errFindingTxtParam error
+	retries := 0
 	for {
+		retries++
 		log.Println("Requesting TXT param")
 		txtParam, errFindingTxtParam = login.RequestTxtParam(session.cookieJar)
 		if errFindingTxtParam == nil {
 			break
+		}
+		if retries > findTextParamMaxRetries {
+			return errFindingTxtParam
 		}
 	}
 	log.Printf("Found txtParam: %d chars", len(txtParam))
