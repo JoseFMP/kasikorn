@@ -21,7 +21,7 @@ func GetAllTransactionTypes() AllTransactionTypes {
 		Commission:           "Commission",
 		LetterCredit:         "Letter of Credit",
 		InterestDeposit:      "Interest Deposit",
-		WitholdingTaxPayable: "Witholding Tax Payable",
+		WitholdingTaxPayable: "Withholding Tax Payable",
 	}
 }
 
