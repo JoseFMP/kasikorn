@@ -28,7 +28,7 @@ func (session *Session) Login() error {
 			break
 		}
 	}
-	log.Printf("Found txtParam: %s", txtParam)
+	log.Printf("Found txtParam: %d chars", len(txtParam))
 	session.tokenLock.Lock()
 	token, errDoingSecurityWelcome := login.DoSecurityWelcome(txtParam, session.cookieJar)
 	if errDoingSecurityWelcome != nil {
@@ -42,8 +42,8 @@ func (session *Session) Login() error {
 	if errRefreshing != nil {
 		return errRefreshing
 	}
-	account.LogAccounts(session.accounts)
-
+	accountsLog := account.GenerateLogAccountNumbers(session.accounts)
+	log.Printf("Found accounts: %s", accountsLog)
 	errCheckingSession := checkSession(session.cookieJar)
 	if errCheckingSession != nil {
 		return errCheckingSession
