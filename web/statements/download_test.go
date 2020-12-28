@@ -4,13 +4,14 @@ import (
 	"testing"
 	"time"
 
+	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCanStrangeFormatAccountForDownload(t *testing.T) {
 
-	mockAccountID := `20161006245912`
-	mockAccountNumber := `017-3-28346-6`
+	mockAccountID := account.AccountID(`20161006245912`)
+	mockAccountNumber := account.AccountNumber(`017-3-28346-6`)
 	formattedString := formatAccountNumberStrange(mockAccountID, mockAccountNumber)
 
 	expectedResult := `20161006245912|0173283466|null|D|1152|0|null|THB|`
