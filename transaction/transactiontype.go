@@ -10,6 +10,7 @@ type AllTransactionTypes struct {
 	ClearingCheque       TransactionType
 	CashDeposit          TransactionType
 	ChequeMoneyTransfer  TransactionType
+	ChequeWithdrawal     TransactionType
 	TransferWithdrawal   TransactionType
 	Commission           TransactionType
 	LetterCredit         TransactionType
@@ -24,6 +25,7 @@ func GetAllTransactionTypes() AllTransactionTypes {
 		CashDeposit:          "Cash Deposit",
 		CashWithdrawal:       "Cash Withdrawal",
 		ChequeMoneyTransfer:  "Cheque/Money Transfer",
+		ChequeWithdrawal:     "Cheque Withdrawal",
 		ClearingCheque:       "Clearing Cheque",
 		TransferWithdrawal:   "Transfer Withdrawal",
 		Commission:           "Commission",
@@ -36,6 +38,7 @@ func GetAllTransactionTypes() AllTransactionTypes {
 func GetAllTransactionTypesMap() map[string]TransactionType {
 	allTransactionTypes := GetAllTransactionTypes()
 	return map[string]TransactionType{
+		sanitizeTransactionTypeString(string(allTransactionTypes.ChequeWithdrawal)):     allTransactionTypes.ChequeWithdrawal,
 		sanitizeTransactionTypeString(string(allTransactionTypes.TransferDeposit)):      allTransactionTypes.TransferDeposit,
 		sanitizeTransactionTypeString(string(allTransactionTypes.PaymentReceived)):      allTransactionTypes.PaymentReceived,
 		sanitizeTransactionTypeString(string(allTransactionTypes.CashDeposit)):          allTransactionTypes.CashDeposit,
