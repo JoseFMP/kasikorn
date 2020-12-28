@@ -4,6 +4,8 @@ import "strings"
 
 type TransactionType string
 type AllTransactionTypes struct {
+	TransferDeposit      TransactionType
+	PaymentReceived      TransactionType
 	CashWithdrawal       TransactionType
 	ClearingCheque       TransactionType
 	CashDeposit          TransactionType
@@ -17,7 +19,8 @@ type AllTransactionTypes struct {
 
 func GetAllTransactionTypes() AllTransactionTypes {
 	return AllTransactionTypes{
-
+		TransferDeposit:      "Transfer Deposit",
+		PaymentReceived:      "Payment Received",
 		CashDeposit:          "Cash Deposit",
 		CashWithdrawal:       "Cash Withdrawal",
 		ChequeMoneyTransfer:  "Cheque/Money Transfer",
@@ -33,6 +36,8 @@ func GetAllTransactionTypes() AllTransactionTypes {
 func GetAllTransactionTypesMap() map[string]TransactionType {
 	allTransactionTypes := GetAllTransactionTypes()
 	return map[string]TransactionType{
+		sanitizeTransactionTypeString(string(allTransactionTypes.TransferDeposit)):      allTransactionTypes.TransferDeposit,
+		sanitizeTransactionTypeString(string(allTransactionTypes.PaymentReceived)):      allTransactionTypes.PaymentReceived,
 		sanitizeTransactionTypeString(string(allTransactionTypes.CashDeposit)):          allTransactionTypes.CashDeposit,
 		sanitizeTransactionTypeString(string(allTransactionTypes.CashWithdrawal)):       allTransactionTypes.CashWithdrawal,
 		sanitizeTransactionTypeString(string(allTransactionTypes.ChequeMoneyTransfer)):  allTransactionTypes.ChequeMoneyTransfer,
