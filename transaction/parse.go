@@ -11,14 +11,16 @@ func Parse(records [][]string, hasCheckNumber bool) []Transaction {
 
 	transactions := make([]Transaction, 0)
 
+	errParsingRecords := make([]error, 0)
 	for _, r := range records {
 		transaction, errParsingRecord := parseTransaction(r, hasCheckNumber)
 		if errParsingRecord == nil {
 			transactions = append(transactions, transaction)
 		} else {
-			log.Printf("Error parsing transaction: %v", errParsingRecord)
+			errParsingRecords = append(errParsingRecords, errParsingRecord)
 		}
 	}
+	log.Printf("Parsed %d transactions, %d failed", len(transactions), len(errParsingRecords))
 	return transactions
 }
 
