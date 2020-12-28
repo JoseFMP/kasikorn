@@ -23,6 +23,7 @@ func (session *Session) Login() error {
 	var txtParam string
 	var errFindingTxtParam error
 	for {
+		log.Println("Requesting TXT param")
 		txtParam, errFindingTxtParam = login.RequestTxtParam(session.cookieJar)
 		if errFindingTxtParam == nil {
 			break
