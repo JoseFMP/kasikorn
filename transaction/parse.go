@@ -3,6 +3,7 @@ package transaction
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
 )
@@ -11,16 +12,19 @@ func Parse(records [][]string, hasCheckNumber bool) []Transaction {
 
 	transactions := make([]Transaction, 0)
 
-	errParsingRecords := make([]error, 0)
+	errParsingRecords := make([]string, 0)
 	for _, r := range records {
 		transaction, errParsingRecord := parseTransaction(r, hasCheckNumber)
 		if errParsingRecord == nil {
 			transactions = append(transactions, transaction)
 		} else {
-			errParsingRecords = append(errParsingRecords, errParsingRecord)
+			errParsingRecords = append(errParsingRecords, errParsingRecord.Error())
 		}
 	}
-	log.Printf("Parsed %d transactions, %d failed", len(transactions), len(errParsingRecords))
+	if len(errParsingRecords) > 0 {
+		message := strings.Join(errParsingRecords, "\n")
+		log.Printf("Parsed %d transactions, %d failed: %s", len(transactions), len(errParsingRecords), message)
+	}
 	return transactions
 }
 
