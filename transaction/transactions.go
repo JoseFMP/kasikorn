@@ -13,7 +13,7 @@ type Transaction struct {
 	OutstandingBalanceTHB float64         `json:"outstandingBalanceTHB"`
 	Channel               ServiceChannel  `json:"channel"`
 	Note                  string          `json:"note"`
-	CheckNumber           *string         `json:"checkNumber"`
+	ChequeNumber          *string         `json:"chequeNumber"`
 }
 
 type ServiceChannel string

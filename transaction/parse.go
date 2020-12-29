@@ -30,17 +30,17 @@ func Parse(records [][]string, hasCheckNumber bool) []Transaction {
 
 var regexpSlashedDateAndTime = utils.GetRegexpSlashedDateAndTime()
 
-func parseTransaction(record []string, hasCheckNumber bool) (Transaction, error) {
+func parseTransaction(record []string, hasChequeNumber bool) (Transaction, error) {
 
 	checkNumberOffset := 0
-	if hasCheckNumber {
+	if hasChequeNumber {
 		checkNumberOffset = 1
 	}
 	if len(record) == 0 {
 		return Transaction{}, fmt.Errorf("Record is empty, cannot parse a transaction")
 	}
 
-	if (hasCheckNumber && len(record) < 8) || (!hasCheckNumber && len(record) < 7) {
+	if (hasChequeNumber && len(record) < 8) || (!hasChequeNumber && len(record) < 7) {
 		return Transaction{}, fmt.Errorf("Record does not have enough columns")
 	}
 
@@ -58,9 +58,9 @@ func parseTransaction(record []string, hasCheckNumber bool) (Transaction, error)
 		return Transaction{}, fmt.Errorf(`Not found transaction type "%s"`, record[1])
 	}
 
-	var checkNumber *string
-	if hasCheckNumber {
-		checkNumber = &record[2]
+	var chequeNumber *string
+	if hasChequeNumber {
+		chequeNumber = &record[2]
 	}
 
 	amountAsString := record[2+checkNumberOffset]
@@ -89,8 +89,8 @@ func parseTransaction(record []string, hasCheckNumber bool) (Transaction, error)
 		Type:                  *transactionType,
 		AmountTHB:             amount,
 		OutstandingBalanceTHB: balance,
-		Channel:               ServiceChannel(record[5]),
-		Note:                  record[6],
-		CheckNumber:           checkNumber,
+		Channel:               ServiceChannel(record[5+checkNumberOffset]),
+		Note:                  record[6+checkNumberOffset],
+		ChequeNumber:          chequeNumber,
 	}, nil
 }
