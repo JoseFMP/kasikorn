@@ -21,6 +21,8 @@ type AllTransactionTypes struct {
 	LetterCredit TransactionType
 
 	WitholdingTaxPayable TransactionType
+
+	OpenAccount TransactionType
 }
 
 func GetAllTransactionTypes() AllTransactionTypes {
@@ -37,25 +39,36 @@ func GetAllTransactionTypes() AllTransactionTypes {
 		LetterCredit:         "Letter of Credit",
 		InterestDeposit:      "Interest Deposit",
 		WitholdingTaxPayable: "Withholding Tax Payable",
+		OpenAccount:          "Open Account",
 	}
 }
 
 func GetAllTransactionTypesMap() map[string]TransactionType {
 	allTransactionTypes := GetAllTransactionTypes()
-	return map[string]TransactionType{
-		sanitizeTransactionTypeString(string(allTransactionTypes.ChequeWithdrawal)):     allTransactionTypes.ChequeWithdrawal,
-		sanitizeTransactionTypeString(string(allTransactionTypes.TransferDeposit)):      allTransactionTypes.TransferDeposit,
-		sanitizeTransactionTypeString(string(allTransactionTypes.PaymentReceived)):      allTransactionTypes.PaymentReceived,
-		sanitizeTransactionTypeString(string(allTransactionTypes.CashDeposit)):          allTransactionTypes.CashDeposit,
-		sanitizeTransactionTypeString(string(allTransactionTypes.CashWithdrawal)):       allTransactionTypes.CashWithdrawal,
-		sanitizeTransactionTypeString(string(allTransactionTypes.ChequeMoneyTransfer)):  allTransactionTypes.ChequeMoneyTransfer,
-		sanitizeTransactionTypeString(string(allTransactionTypes.ClearingCheque)):       allTransactionTypes.ClearingCheque,
-		sanitizeTransactionTypeString(string(allTransactionTypes.TransferWithdrawal)):   allTransactionTypes.TransferWithdrawal,
-		sanitizeTransactionTypeString(string(allTransactionTypes.Commission)):           allTransactionTypes.Commission,
-		sanitizeTransactionTypeString(string(allTransactionTypes.LetterCredit)):         allTransactionTypes.LetterCredit,
-		sanitizeTransactionTypeString(string(allTransactionTypes.InterestDeposit)):      allTransactionTypes.InterestDeposit,
-		sanitizeTransactionTypeString(string(allTransactionTypes.WitholdingTaxPayable)): allTransactionTypes.WitholdingTaxPayable,
-	}
+	mapToUse := make(map[string]TransactionType)
+
+	addToMap(mapToUse, allTransactionTypes.ChequeWithdrawal)
+	addToMap(mapToUse, allTransactionTypes.TransferDeposit)
+	addToMap(mapToUse, allTransactionTypes.PaymentReceived)
+	addToMap(mapToUse, allTransactionTypes.CashDeposit)
+	addToMap(mapToUse, allTransactionTypes.CashWithdrawal)
+	addToMap(mapToUse, allTransactionTypes.ChequeMoneyTransfer)
+	addToMap(mapToUse, allTransactionTypes.ClearingCheque)
+	addToMap(mapToUse, allTransactionTypes.TransferWithdrawal)
+	addToMap(mapToUse, allTransactionTypes.Commission)
+	addToMap(mapToUse, allTransactionTypes.LetterCredit)
+	addToMap(mapToUse, allTransactionTypes.InterestDeposit)
+	addToMap(mapToUse, allTransactionTypes.WitholdingTaxPayable)
+	addToMap(mapToUse, allTransactionTypes.WitholdingTaxPayable)
+	addToMap(mapToUse, allTransactionTypes.OpenAccount)
+
+	return mapToUse
+}
+
+func addToMap(mapToUse map[string]TransactionType, transactionType TransactionType) {
+	sanitized := sanitizeTransactionTypeString(string(transactionType))
+
+	mapToUse[sanitized] = transactionType
 }
 
 var allTransactionTypesMap = GetAllTransactionTypesMap()
