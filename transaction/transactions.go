@@ -1,8 +1,6 @@
 package transaction
 
 import (
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -17,14 +15,3 @@ type Transaction struct {
 }
 
 type ServiceChannel string
-
-func parseKasikornAmount(amountAsString string) (float64, error) {
-
-	cleanedAmount := strings.ReplaceAll(amountAsString, ",", "")
-
-	amount, errParsing := strconv.ParseFloat(cleanedAmount, 64)
-	if errParsing != nil {
-		return 0, errParsing
-	}
-	return amount, nil
-}
