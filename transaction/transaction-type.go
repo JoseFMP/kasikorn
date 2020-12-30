@@ -44,7 +44,6 @@ func GetAllTransactionTypes() AllTransactionTypes {
 }
 
 func GetAllTransactionTypesMap() map[string]TransactionType {
-	allTransactionTypes := GetAllTransactionTypes()
 	mapToUse := make(map[string]TransactionType)
 
 	addToMap(mapToUse, allTransactionTypes.ChequeWithdrawal)

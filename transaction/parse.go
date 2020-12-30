@@ -63,25 +63,32 @@ func parseTransaction(record []string, hasChequeNumber bool) (Transaction, error
 		chequeNumber = &record[2]
 	}
 
-	withDrawalAsString := record[2+checkNumberOffset]
-	withDrawalAsString = cleanAmount(withDrawalAsString)
+	var amount float64
+	if *transactionType != allTransactionTypes.OpenAccount {
+		withDrawalAsString := record[2+checkNumberOffset]
+		withDrawalAsString = cleanAmount(withDrawalAsString)
 
-	deposit := false
-	amountAsString := withDrawalAsString
+		deposit := false
+		amountAsString := withDrawalAsString
 
-	if withDrawalAsString == "" {
-		deposit = true
-		depositAsString := record[3+checkNumberOffset]
-		depositAsString = cleanAmount(depositAsString)
-		amountAsString = depositAsString
-	}
+		if withDrawalAsString == "" {
+			deposit = true
+			depositAsString := record[3+checkNumberOffset]
+			depositAsString = cleanAmount(depositAsString)
+			if depositAsString == "" {
+				return Transaction{}, fmt.Errorf("Transaction type %s does not have either deposit or withdrawal amount!", *transactionType)
+			}
+			amountAsString = depositAsString
+		}
 
-	amount, errParsing := parseKasikornAmount(amountAsString)
-	if errParsing != nil {
-		return Transaction{}, fmt.Errorf("Cannot parse amount of transaction: %s. Record:\n%v", amountAsString, record)
-	}
-	if !deposit {
-		amount = amount * (-1)
+		var errParsing error
+		amount, errParsing = parseKasikornAmount(amountAsString)
+		if errParsing != nil {
+			return Transaction{}, fmt.Errorf("Cannot parse amount of transaction: %s. Record:\n%v\nError:%v", amountAsString, record, errParsing)
+		}
+		if !deposit {
+			amount = amount * (-1)
+		}
 	}
 
 	balance, errParsingBalance := parseKasikornAmount(record[4+checkNumberOffset])
