@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
 const accountNumberPattern = `\d{3}-\d{1}-\d{5}-\d{1}`

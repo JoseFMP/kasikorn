@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/token"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 )
 
 const patternTxtParam = `<input type="hidden" name="txtParam" value="`

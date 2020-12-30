@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/statement"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/statements"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/statement"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/statements"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
 func validateInput(from time.Time, to time.Time) error {

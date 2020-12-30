@@ -5,7 +5,7 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/transaction"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/transaction"
 )
 
 const variableFieldsPerRecordValue = -1

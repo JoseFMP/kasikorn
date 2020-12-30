@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/token"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
 func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, error) {

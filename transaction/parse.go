@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/utils"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
 func Parse(records [][]string, hasCheckNumber bool) []Transaction {

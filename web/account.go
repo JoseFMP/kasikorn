@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"regexp"
 
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/account"
-	"dev.azure.com/noon-homa/Kasikorn/kasikorn.git/web/token"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 )
 
 func (session *Session) refreshAccountIDs() error {
