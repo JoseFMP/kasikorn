@@ -64,6 +64,9 @@ func parseTransaction(record []string, hasChequeNumber bool) (Transaction, error
 	}
 
 	amountAsString := record[2+checkNumberOffset]
+	if amountAsString == "" {
+		return Transaction{}, fmt.Errorf("Amount of transaction is an empty string. Record:\n%v", record)
+	}
 	deposit := false
 
 	if record[3+checkNumberOffset] != "" {
@@ -73,7 +76,7 @@ func parseTransaction(record []string, hasChequeNumber bool) (Transaction, error
 
 	amount, errParsing := parseKasikornAmount(amountAsString)
 	if errParsing != nil {
-		return Transaction{}, fmt.Errorf("Cannot parse amount of transaction: %s", amountAsString)
+		return Transaction{}, fmt.Errorf("Cannot parse amount of transaction: %s. Record:\n%v", amountAsString, record)
 	}
 	if !deposit {
 		amount = amount * (-1)
