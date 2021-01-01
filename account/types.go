@@ -21,8 +21,9 @@ func GetAllAccountTypes() AllAccountTypes {
 
 func getAllAccountTypesMap() map[string]AccountType {
 	return map[string]AccountType{
-		string(accountTypes.Savings): accountTypes.Savings,
-		string(accountTypes.Current): accountTypes.Current,
+		sanitizeAccountTypeAsString(string(accountTypes.Savings)): accountTypes.Savings,
+		sanitizeAccountTypeAsString(string(accountTypes.Current)): accountTypes.Current,
+		sanitizeAccountTypeAsString(string(accountTypes.Deposit)): accountTypes.Deposit,
 	}
 }
 
@@ -30,8 +31,11 @@ var accountTypes = GetAllAccountTypes()
 var accountTypesMap = getAllAccountTypesMap()
 
 func GetAccountType(accountTypeAsString string) AccountType {
+	return accountTypesMap[sanitizeAccountTypeAsString(accountTypeAsString)]
+}
 
-	cleanedAccountType := strings.ReplaceAll(accountTypeAsString, "Account", "")
+func sanitizeAccountTypeAsString(asString string) string {
+	cleanedAccountType := strings.ReplaceAll(asString, "Account", "")
 	cleanedAccountType = strings.ReplaceAll(cleanedAccountType, " ", "")
-	return accountTypesMap[cleanedAccountType]
+	return cleanedAccountType
 }
