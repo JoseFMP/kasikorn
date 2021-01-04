@@ -41,6 +41,8 @@ func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber
 	if errInput != nil {
 		return nil, errInput
 	}
+
+	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	session.tokenLock.Lock()
 	if session.token == nil {
 		return nil, fmt.Errorf("No token in session")
@@ -58,6 +60,7 @@ func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber
 	session.token = &newToken
 	session.tokenLock.Unlock()
 
+	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	session.tokenLock.Lock()
 	statementPayload, errDownloading := statements.RequestDownload(from, to, *targetAccount, session.cookieJar, *session.token)
 	if errDownloading != nil {
@@ -67,7 +70,7 @@ func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber
 	}
 	session.tokenLock.Unlock()
 
-	log.Printf("Downloaded %d bytes", len(statementPayload))
+	log.Printf("[%s]Downloaded %d bytes", string(targetAccount.Number), len(statementPayload))
 	statement, errParsing := statement.Parse(statementPayload)
 	if errParsing != nil {
 		return nil, errParsing

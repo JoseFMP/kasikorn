@@ -2,12 +2,14 @@ package web
 
 import (
 	"log"
+	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/login"
 )
 
-const findTextParamMaxRetries = 5
+const findTextParamMaxRetries = 3
+const durationUserClicking = time.Second * 5 // what is a value that works well? Explore
 
 func (session *Session) Login() error {
 
@@ -17,6 +19,7 @@ func (session *Session) Login() error {
 		return errDoingPrelogging
 	}
 
+	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	errMakingReqLogin := login.DoLogging(session.cookieJar, tokenId, session.userName, session.password)
 	if errMakingReqLogin != nil {
 		return errMakingReqLogin
@@ -28,6 +31,7 @@ func (session *Session) Login() error {
 	for {
 		retries++
 		log.Println("Requesting TXT param")
+		time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 		txtParam, errFindingTxtParam = login.RequestTxtParam(session.cookieJar)
 		if errFindingTxtParam == nil {
 			break
@@ -37,6 +41,7 @@ func (session *Session) Login() error {
 		}
 	}
 	log.Printf("Found txtParam: %d chars", len(txtParam))
+	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	session.tokenLock.Lock()
 	token, errDoingSecurityWelcome := login.DoSecurityWelcome(txtParam, session.cookieJar)
 	if errDoingSecurityWelcome != nil {
@@ -46,6 +51,7 @@ func (session *Session) Login() error {
 	session.tokenLock.Unlock()
 	log.Printf("DoSecurityWelcome found Token: %s", token)
 
+	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	errRefreshing := session.refreshAccountIDs()
 	if errRefreshing != nil {
 		return errRefreshing
