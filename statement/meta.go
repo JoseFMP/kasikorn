@@ -50,10 +50,10 @@ func parseRecordsMeta(records [][]string) (*StatementMeta, error) {
 				result.Account.NickName = record[1]
 			case rowHeaders.Type:
 				accountType := account.GetAccountType(record[1])
-				if accountType == "" {
-					return nil, fmt.Errorf("Could not parse account type")
+				if accountType == nil {
+					return nil, fmt.Errorf("Could not parse account type from string: %s", record[1])
 				}
-				result.Account.Type = accountType
+				result.Account.Type = *accountType
 			case rowHeaders.StatementPeriod:
 				dates := strings.Split(record[1], "-")
 				fromAsString := dates[0]

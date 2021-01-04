@@ -30,10 +30,14 @@ func getAllAccountTypesMap() map[string]AccountType {
 var accountTypes = GetAllAccountTypes()
 var accountTypesMap = getAllAccountTypesMap()
 
-func GetAccountType(accountTypeAsString string) AccountType {
+func GetAccountType(accountTypeAsString string) *AccountType {
 
 	stringSanitized := sanitizeAccountTypeAsString(accountTypeAsString)
-	return accountTypesMap[stringSanitized]
+	accountType, exists := accountTypesMap[stringSanitized]
+	if exists {
+		return &accountType
+	}
+	return nil
 }
 
 func sanitizeAccountTypeAsString(asString string) string {

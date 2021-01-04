@@ -28,6 +28,6 @@ func testParseTestCase(t *testing.T, testCase *parseAccountTypeTestCase) {
 	result := GetAccountType(testCase.accountTypeAsString)
 
 	//verify
-	require.Equal(t, testCase.expectedValue, result)
+	require.Equal(t, testCase.expectedValue, *result)
 
 }
