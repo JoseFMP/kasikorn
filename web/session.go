@@ -14,12 +14,13 @@ import (
 )
 
 type Session struct {
-	userName  string
-	password  string
-	token     *string
-	tokenLock sync.RWMutex
-	cookieJar http.CookieJar
-	accounts  map[account.AccountNumber]*account.Account
+	userName      string
+	password      string
+	token         *string
+	tokenLock     sync.RWMutex
+	cookieJar     http.CookieJar
+	accounts      map[account.AccountNumber]*account.Account
+	initialConfig *config.Config
 }
 
 func InitSession(config config.Config) *Session {
@@ -31,10 +32,11 @@ func InitSession(config config.Config) *Session {
 	}
 
 	session := &Session{
-		userName:  config.UserName,
-		password:  config.Password,
-		accounts:  make(map[account.AccountNumber]*account.Account),
-		cookieJar: cookieJar,
+		userName:      config.UserName,
+		password:      config.Password,
+		accounts:      make(map[account.AccountNumber]*account.Account),
+		cookieJar:     cookieJar,
+		initialConfig: &config,
 	}
 	return session
 }
