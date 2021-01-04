@@ -51,7 +51,7 @@ func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber
 	if !accountAvailable {
 		return nil, fmt.Errorf("Account %s not found", accountNumber)
 	}
-	newToken, errSelectingAccount := statements.SelectAccountForStatementInquiry(from, to, targetAccount.ID, *session.token, session.cookieJar)
+	newToken, downloadCommand, errSelectingAccount := statements.SelectAccountForStatementInquiry(from, to, targetAccount.ID, *session.token, session.cookieJar)
 
 	if errSelectingAccount != nil {
 		session.tokenLock.Unlock()
@@ -62,7 +62,11 @@ func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber
 
 	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	session.tokenLock.Lock()
-	statementPayload, errDownloading := statements.RequestDownload(from, to, *targetAccount, session.cookieJar, *session.token)
+	accountIdentificator := statements.AccountIdentificator{
+		ID:     targetAccount.ID,
+		Number: targetAccount.Number,
+	}
+	statementPayload, errDownloading := statements.RequestDownload(from, to, accountIdentificator, downloadCommand, session.cookieJar, *session.token)
 	if errDownloading != nil {
 		session.tokenLock.Unlock()
 

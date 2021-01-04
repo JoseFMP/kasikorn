@@ -3,7 +3,6 @@ package statements
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -13,11 +12,11 @@ import (
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, error) {
+func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, string, error) {
 	payload := getSelectStatementPayload(from, to, accountID, tokenToSend)
 	req, errCreatingReq := utils.CreatePostFormReq(payload, eBankURLs.StatementInquiry)
 	if errCreatingReq != nil {
-		return "", errCreatingReq
+		return "", "", errCreatingReq
 	}
 	setHeadersSelectAccount(&req.Header)
 	httpClient := http.Client{
@@ -26,31 +25,31 @@ func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID ac
 
 	resp, errDoingReq := httpClient.Do(req)
 	if errDoingReq != nil {
-		return "", errDoingReq
+		return "", "", errDoingReq
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("Making first HTTP req returned not OK: %d - %s", resp.StatusCode, resp.Status)
+		return "", "", fmt.Errorf("Making first HTTP req returned not OK: %d - %s", resp.StatusCode, resp.Status)
 	}
 
 	responsePayload, errReadingResp := ioutil.ReadAll(resp.Body)
 	if errReadingResp != nil {
-		return "", errReadingResp
+		return "", "", errReadingResp
 	}
 
 	respAsString := string(responsePayload)
 	errVerifyingPayload := verifyResponsePayloadSelect(respAsString)
 	if errVerifyingPayload != nil {
-		return "", errVerifyingPayload
+		return "", "", errVerifyingPayload
 	}
 
 	tokenCandidate := token.FindToken(respAsString)
 	if tokenCandidate != nil {
-		log.Printf("selectAccountForStatementInquiry found token: %s", *tokenCandidate)
+		downloadCommand := findDownloadCommandInPayload(respAsString)
+		return *tokenCandidate, downloadCommand, nil
 	} else {
-		return "", fmt.Errorf("Did not find a token in selectAccountForStatementInquiry")
+		return "", "", fmt.Errorf("Did not find a token in selectAccountForStatementInquiry")
 	}
-	return *tokenCandidate, nil
 }
 
 func setHeadersSelectAccount(header *http.Header) {
@@ -148,3 +147,8 @@ func verifyErrorResponse(payload string) error {
 
 var postFormFields = utils.GetFieldNames()
 var postFormValues = utils.GetFieldValues()
+
+type AccountIdentificator struct {
+	Number account.AccountNumber
+	ID     account.AccountID
+}

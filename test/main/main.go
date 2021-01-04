@@ -19,6 +19,11 @@ func main() {
 		UserName: "",
 		Password: "",
 	}
+
+	if configuration.UserName == "" || configuration.Password == "" || string(savingsAccountNumber) == "" {
+		panic("Fill in user name, password and account number to test")
+	}
+
 	session := web.InitSession(configuration)
 
 	for {

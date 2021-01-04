@@ -8,16 +8,17 @@ import (
 	"strings"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
 func RequestDownload(from time.Time,
 	to time.Time,
-	account account.Account, cookies http.CookieJar, tokenToUse string) ([]byte, error) {
+	account AccountIdentificator,
+	downloadCommand string,
+	cookies http.CookieJar, tokenToUse string) ([]byte, error) {
 
-	requestPayload := getDownloadRequestPayload(from, to, account.ID, account.Number, tokenToUse)
+	requestPayload := getDownloadRequestPayload(from, to, account, tokenToUse, downloadCommand)
 	req, errCreatingReq := utils.CreatePostFormReq(requestPayload, eBankURLs.StatementInquiry)
 	if errCreatingReq != nil {
 		return nil, errCreatingReq
@@ -58,14 +59,14 @@ func RequestDownload(from time.Time,
 
 var eBankURLs = utils.GetAllEbankURLs()
 
-func getDownloadRequestPayload(from time.Time, to time.Time, accountID account.AccountID, accountNumber account.AccountNumber, tokenToSend string) map[string]string {
+func getDownloadRequestPayload(from time.Time, to time.Time, account AccountIdentificator, tokenToSend string, downloadCommand string) map[string]string {
 	values := map[string]string{
 		token.Name:                   tokenToSend,
-		postFormFields.AccountNo:     string(accountID),
-		postFormFields.AccountNumber: string(accountNumber),
-		postFormFields.SelAccountNo:  formatAccountNumberStrange(accountID, accountNumber),
+		postFormFields.AccountNo:     string(account.ID),
+		postFormFields.AccountNumber: string(account.Number),
+		postFormFields.SelAccountNo:  formatAccountNumberStrange(account),
 		postFormFields.AccountDesc:   "",
-		postFormFields.Action:        postFormValues.ActionDownloadCa,
+		postFormFields.Action:        downloadCommand,
 		postFormFields.SelPrevMonth:  "",
 		postFormFields.Period:        "3",
 		postFormFields.No:            "0",
@@ -92,8 +93,8 @@ func setDownloadRequestHeaders(header *http.Header) {
 }
 
 //20161006245912|0173283466|null|D|1152|0|null|THB|
-func formatAccountNumberStrange(accountID account.AccountID, accountNumber account.AccountNumber) string {
+func formatAccountNumberStrange(account AccountIdentificator) string {
 
-	accountNumberNoDashes := strings.ReplaceAll(string(accountNumber), "-", "")
-	return fmt.Sprintf(`%s|%s|null|D|1152|0|null|THB|`, accountID, accountNumberNoDashes)
+	accountNumberNoDashes := strings.ReplaceAll(string(account.Number), "-", "")
+	return fmt.Sprintf(`%s|%s|null|D|1152|0|null|THB|`, account.ID, accountNumberNoDashes)
 }
