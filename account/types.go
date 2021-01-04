@@ -31,11 +31,14 @@ var accountTypes = GetAllAccountTypes()
 var accountTypesMap = getAllAccountTypesMap()
 
 func GetAccountType(accountTypeAsString string) AccountType {
-	return accountTypesMap[sanitizeAccountTypeAsString(accountTypeAsString)]
+
+	stringSanitized := sanitizeAccountTypeAsString(accountTypeAsString)
+	return accountTypesMap[stringSanitized]
 }
 
 func sanitizeAccountTypeAsString(asString string) string {
-	cleanedAccountType := strings.ReplaceAll(asString, "Account", "")
+	cleanedAccountType := strings.ToLower(asString)
+	cleanedAccountType = strings.ReplaceAll(cleanedAccountType, "account", "")
 	cleanedAccountType = strings.ReplaceAll(cleanedAccountType, " ", "")
 	return cleanedAccountType
 }
