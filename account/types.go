@@ -11,8 +11,8 @@ type AllAccountTypes struct {
 	Deposit AccountType
 }
 
-func GetAllAccountTypes() AllAccountTypes {
-	return AllAccountTypes{
+func GetAllAccountTypes() *AllAccountTypes {
+	return &AllAccountTypes{
 		Savings: "Savings",
 		Current: "Current",
 		Deposit: "Deposit",
