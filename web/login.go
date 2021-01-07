@@ -30,7 +30,7 @@ func (session *Session) Login() error {
 	retries := 0
 	for {
 		retries++
-		log.Println("Requesting TXT param")
+		log.Println("[Login] Requesting TXT param")
 		time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 		txtParam, errFindingTxtParam = login.RequestTxtParam(session.cookieJar)
 		if errFindingTxtParam == nil {
@@ -40,7 +40,7 @@ func (session *Session) Login() error {
 			return errFindingTxtParam
 		}
 	}
-	log.Printf("Found txtParam: %d chars", len(txtParam))
+	log.Printf("[Login] Found txtParam: %d chars", len(txtParam))
 	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	session.tokenLock.Lock()
 	token, errDoingSecurityWelcome := login.DoSecurityWelcome(txtParam, session.cookieJar)
@@ -49,7 +49,7 @@ func (session *Session) Login() error {
 	}
 	session.token = &token
 	session.tokenLock.Unlock()
-	log.Printf("DoSecurityWelcome found Token: %s", token)
+	log.Printf("[Login] DoSecurityWelcome found Token: %s", token)
 
 	time.Sleep(durationUserClicking) // let's pretend we are a user browsing
 	errRefreshing := session.refreshAccountIDs()
@@ -57,7 +57,7 @@ func (session *Session) Login() error {
 		return errRefreshing
 	}
 	accountsLog := account.GenerateLogAccountNumbers(session.accounts)
-	log.Printf("Found accounts: %s", accountsLog)
+	log.Printf("[Login] Found accounts: %s", accountsLog)
 	errCheckingSession := checkSession(session.cookieJar)
 	if errCheckingSession != nil {
 		return errCheckingSession
