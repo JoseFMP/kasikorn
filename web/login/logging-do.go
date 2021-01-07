@@ -29,11 +29,6 @@ func DoLogging(cookiesJar http.CookieJar, tokenId string, userName string, passw
 		return errMakingReq
 	}
 	if redirected {
-
-		//payload, errReadingData := ioutil.ReadAll(resp.Body)
-		//if errReadingData != nil {
-		//	return errReadingData
-		//}
 		payloadAsString, errDecodingPayload := utils.DecodeBody(resp.Body, resp.Header.Get("Content-Type"))
 		if errDecodingPayload != nil {
 			return errDecodingPayload
