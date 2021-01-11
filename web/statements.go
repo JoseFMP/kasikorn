@@ -33,8 +33,13 @@ func validateInput(from utils.KasikornDate, to utils.KasikornDate, now time.Time
 
 	oldestFrom := utils.GetSixMonthsFromNowCelinig(now)
 
-	if oldestFrom.Year() < from.Year {
+	if oldestFrom.Year() > from.Year {
 		return fmt.Errorf("Can only fetch statements not older than 6 months")
+	} else if oldestFrom.Year() == from.Year {
+
+		if oldestFrom.YearDay() > from.Day {
+			return fmt.Errorf("The year you wanna fetch is ok but the day is before the minimum from")
+		}
 	}
 
 	return nil

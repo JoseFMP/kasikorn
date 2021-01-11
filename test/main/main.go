@@ -45,7 +45,7 @@ func main() {
 	statement, errGettingStatement := session.GetStatement(from, to, savingsAccountNumber)
 
 	if errGettingStatement != nil {
-		log.Printf("Error Getting statement")
+		log.Printf("Error getting statement: %v", errGettingStatement)
 	} else {
 		log.Printf("Statement:\n%+v", *statement)
 	}
@@ -59,7 +59,7 @@ func getFromTo() (utils.KasikornDate, utils.KasikornDate) {
 	}
 	to := utils.KasikornDate{
 		Year: 2021,
-		Day:  10,
+		Day:  11,
 	}
 
 	return from, to
