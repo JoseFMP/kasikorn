@@ -6,14 +6,13 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-func RequestDownload(from time.Time,
-	to time.Time,
+func RequestDownload(from utils.KasikornDate,
+	to utils.KasikornDate,
 	account AccountIdentificator,
 	downloadCommand string,
 	cookies http.CookieJar, tokenToUse string) ([]byte, error) {
@@ -59,7 +58,7 @@ func RequestDownload(from time.Time,
 
 var eBankURLs = utils.GetAllEbankURLs()
 
-func getDownloadRequestPayload(from time.Time, to time.Time, account AccountIdentificator, tokenToSend string, downloadCommand string) map[string]string {
+func getDownloadRequestPayload(from utils.KasikornDate, to utils.KasikornDate, account AccountIdentificator, tokenToSend string, downloadCommand string) map[string]string {
 	values := map[string]string{
 		token.Name:                   tokenToSend,
 		postFormFields.AccountNo:     string(account.ID),

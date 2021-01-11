@@ -11,13 +11,17 @@ import (
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web"
 )
 
+// Fill in!
+const accountNumber = `018-8-89233-7`
+const username = "thetower"
+const password = "tower2016"
+
 func main() {
 
-	// Fill in!
-	savingsAccountNumber := account.AccountNumber(``)
+	savingsAccountNumber := account.AccountNumber(accountNumber)
 	configuration := config.Config{
-		UserName: "",
-		Password: "",
+		UserName: username,
+		Password: password,
 	}
 
 	if configuration.UserName == "" || configuration.Password == "" || string(savingsAccountNumber) == "" {
@@ -47,12 +51,16 @@ func main() {
 	}
 }
 
-func getFromTo() (time.Time, time.Time) {
+func getFromTo() (utils.KasikornDate, utils.KasikornDate) {
 
-	now := time.Now()
+	from := utils.KasikornDate{
+		Year: 2020,
+		Day:  360,
+	}
+	to := utils.KasikornDate{
+		Year: 2021,
+		Day:  10,
+	}
 
-	from := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, utils.GetThailandTimeZone())
-	to := now.Add(-time.Hour * 24)
-	log.Printf("From: %s, to: %s", from.Format("2006/01/02"), to.Format("2006/01/02"))
 	return from, to
 }

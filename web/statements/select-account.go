@@ -5,14 +5,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-func SelectAccountForStatementInquiry(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, string, error) {
+func SelectAccountForStatementInquiry(from utils.KasikornDate, to utils.KasikornDate, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, string, error) {
 	payload := getSelectStatementPayload(from, to, accountID, tokenToSend)
 	req, errCreatingReq := utils.CreatePostFormReq(payload, eBankURLs.StatementInquiry)
 	if errCreatingReq != nil {
@@ -66,7 +65,7 @@ func setHeadersSelectAccount(header *http.Header) {
 	header.Add("Sec-Fetch-Site", "same-origin")
 }
 
-func getSelectStatementPayload(from time.Time, to time.Time, accountID account.AccountID, tokenToSend string) map[string]string {
+func getSelectStatementPayload(from utils.KasikornDate, to utils.KasikornDate, accountID account.AccountID, tokenToSend string) map[string]string {
 	values := map[string]string{
 		postFormFields.AccountDesc: "",
 		postFormFields.Action:      postFormValues.ActionSelect,
@@ -79,33 +78,7 @@ func getSelectStatementPayload(from time.Time, to time.Time, accountID account.A
 	return values
 }
 
-func setFromToIntoPayload(from time.Time, to time.Time, payload map[string]string, includeDateFromDateTo bool) {
-	fromDay, fromMonth, fromYear := timeToPayload(from)
 
-	payload["selDayFrom"] = fromDay
-	payload["selMonthFrom"] = fromMonth
-	payload["selYearFrom"] = fromYear
-
-	toDay, toMonth, toYear := timeToPayload(to)
-	payload["selDayTo"] = toDay
-	payload["selMonthTo"] = toMonth
-	payload["selYearTo"] = toYear
-	if includeDateFromDateTo {
-		payload["selDateFrom"] = from.Format(selDateLayout)
-		payload["selDateTo"] = to.Format(selDateLayout)
-	}
-}
-
-const selDateLayout = "02/01/2006"
-
-func timeToPayload(timeToEmbed time.Time) (string, string, string) {
-
-	day := fmt.Sprintf("%02d", timeToEmbed.Day())
-	month := fmt.Sprintf("%02d", timeToEmbed.Month())
-	year := fmt.Sprintf("%02d", timeToEmbed.Year())
-
-	return day, month, year
-}
 
 const inquiryResultPattern = `<h1>Statement Inquiry - Inquiry Result</h1>`
 
@@ -145,8 +118,7 @@ func verifyErrorResponse(payload string) error {
 	return nil
 }
 
-var postFormFields = utils.GetFieldNames()
-var postFormValues = utils.GetFieldValues()
+
 
 type AccountIdentificator struct {
 	Number account.AccountNumber

@@ -33,3 +33,19 @@ func doTestCase(t *testing.T, tc *parseDateStringTestCase) {
 	require.Nil(t, errParsing)
 	require.Equal(t, tc.expectedValue, res)
 }
+
+func TestKasikornDatesCorrectlyParsed(t *testing.T) {
+
+	mockKasikornDate := KasikornDate{
+		Year: 2020,
+		Day:  1,
+	}
+
+	//act
+	asTimeDate := mockKasikornDate.ToTimeDate()
+
+	//verify
+
+	asDate := time.Date(2020, 1, 1, 0, 0, 0, 0, thailandTimeZone)
+	require.Equal(t, asDate, asTimeDate)
+}

@@ -62,13 +62,26 @@ type postFieldNames struct {
 	AccountNo     string
 	AccountNumber string
 	AccountDesc   string
-	No            string
-	SelAccountNo  string
 	Action        string
-	Period        string
-	SelPrevMonth  string
-	PdTxtParam    string
-	TxtParam      string
+
+	No           string
+	SelAccountNo string
+
+	Period       string
+	PdTxtParam   string
+	SelPrevMonth string
+
+	SelDayFrom   string
+	SelMonthFrom string
+	SelYearFrom  string
+	SelDayTo     string
+	SelMonthTo   string
+	SelYearTo    string
+
+	SelDateFrom string
+	SelDateTo   string
+
+	TxtParam string
 }
 
 func GetFieldNames() postFieldNames {
@@ -83,6 +96,14 @@ func GetFieldNames() postFieldNames {
 		SelPrevMonth:  "selPrevMonth",
 		PdTxtParam:    "_pd",
 		TxtParam:      "txtParam",
+		SelDayFrom:    "selDayFrom",
+		SelMonthFrom:  "selMonthFrom",
+		SelYearFrom:   "selYearFrom",
+		SelDayTo:      "selDayTo",
+		SelMonthTo:    "selMonthTo",
+		SelYearTo:     "selYearTo",
+		SelDateFrom:   "selDateFrom",
+		SelDateTo:     "selDateTo",
 	}
 }
 

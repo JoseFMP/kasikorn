@@ -11,33 +11,38 @@ import (
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 )
 
-func validateInput(from time.Time, to time.Time) error {
+func validateInput(from utils.KasikornDate, to utils.KasikornDate, now time.Time) error {
 
-	if from.IsZero() {
-		return fmt.Errorf("From not specified, 0 not valid")
+	if from.Year == 0 {
+		return fmt.Errorf("From year not specified, 0 not valid")
 	}
 
-	if to.IsZero() {
+	if to.Year == 0 {
 		return fmt.Errorf("To not specified, 0 not valid")
 	}
 
-	if to.Before(from) {
+	if to.Year < from.Year {
 		return fmt.Errorf("To cannot be before 0")
 	}
 
-	now := time.Now()
+	if to.Year == from.Year {
+		if to.Day < from.Day {
+			return fmt.Errorf("To cannot be before 0")
+		}
+	}
+
 	oldestFrom := utils.GetSixMonthsFromNowCelinig(now)
 
-	if from.Before(oldestFrom) {
+	if oldestFrom.Year() < from.Year {
 		return fmt.Errorf("Can only fetch statements not older than 6 months")
 	}
 
 	return nil
 }
 
-func (session *Session) GetStatement(from time.Time, to time.Time, accountNumber account.AccountNumber) (*statement.Statement, error) {
+func (session *Session) GetStatement(from utils.KasikornDate, to utils.KasikornDate, accountNumber account.AccountNumber) (*statement.Statement, error) {
 
-	errInput := validateInput(from, to)
+	errInput := validateInput(from, to, time.Now())
 	if errInput != nil {
 		return nil, errInput
 	}
