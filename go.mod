@@ -1,4 +1,4 @@
-module dev.azure.com/noon-homa/Kasikorn/_git/kasikorn
+module github.com/JoseFMP/kasikorn
 
 go 1.15
 

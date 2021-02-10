@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/config"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"github.com/JoseFMP/kasikorn/account"
+	"github.com/JoseFMP/kasikorn/config"
+	"github.com/JoseFMP/kasikorn/web/utils"
 )
 
 type Session struct {

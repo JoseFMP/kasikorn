@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"github.com/JoseFMP/kasikorn/web/token"
+	"github.com/JoseFMP/kasikorn/web/utils"
 )
 
 func DoLogging(cookiesJar http.CookieJar, tokenId string, userName string, password string) error {

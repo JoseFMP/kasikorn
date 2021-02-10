@@ -3,7 +3,7 @@ package statements
 import (
 	"testing"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"github.com/JoseFMP/kasikorn/account"
 	"github.com/stretchr/testify/assert"
 )
 

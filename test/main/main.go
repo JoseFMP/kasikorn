@@ -1,17 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/statement"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/transaction"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"github.com/JoseFMP/kasikorn/account"
+	"github.com/JoseFMP/kasikorn/web/utils"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/config"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web"
+	"github.com/JoseFMP/kasikorn/config"
+	"github.com/JoseFMP/kasikorn/web"
 )
 
 // Fill in!
@@ -68,4 +65,3 @@ func getFromTo() (utils.KasikornDate, utils.KasikornDate) {
 
 	return from, to
 }
-

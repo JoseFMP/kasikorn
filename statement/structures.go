@@ -1,6 +1,6 @@
 package statement
 
-import "dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/transaction"
+import "github.com/JoseFMP/kasikorn/transaction"
 
 type Statement struct {
 	Meta         StatementMeta             `json:"meta"`

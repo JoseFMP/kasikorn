@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/token"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"github.com/JoseFMP/kasikorn/account"
+	"github.com/JoseFMP/kasikorn/web/token"
+	"github.com/JoseFMP/kasikorn/web/utils"
 )
 
 func SelectAccountForStatementInquiry(from utils.KasikornDate, to utils.KasikornDate, accountID account.AccountID, tokenToSend string, cookies http.CookieJar) (string, string, error) {
@@ -78,8 +78,6 @@ func getSelectStatementPayload(from utils.KasikornDate, to utils.KasikornDate, a
 	return values
 }
 
-
-
 const inquiryResultPattern = `<h1>Statement Inquiry - Inquiry Result</h1>`
 
 func verifyResponsePayloadSelect(payload string) error {
@@ -117,8 +115,6 @@ func verifyErrorResponse(payload string) error {
 
 	return nil
 }
-
-
 
 type AccountIdentificator struct {
 	Number account.AccountNumber

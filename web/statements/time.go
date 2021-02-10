@@ -3,7 +3,7 @@ package statements
 import (
 	"fmt"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
+	"github.com/JoseFMP/kasikorn/web/utils"
 )
 
 func setFromToIntoPayload(from utils.KasikornDate, to utils.KasikornDate, payload map[string]string, includeDateFromDateTo bool) {

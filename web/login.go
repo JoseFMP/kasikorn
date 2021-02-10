@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
-	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/login"
+	"github.com/JoseFMP/kasikorn/account"
+	"github.com/JoseFMP/kasikorn/web/login"
 )
 
 const findTextParamMaxRetries = 3
