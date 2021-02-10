@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/noon-homa/Kasikorn/_apis/build/status/kasikorn-ci)](https://dev.azure.com/noon-homa/Kasikorn/_build/latest?definitionId=27)
+
 # Motivation
 Traditional banks are well known to be stale in terms of IT infrastructure and services. Most often than rare, they do not expose any public (or private) API. However, local business require to look at their bank accounts transactions on a daily, hourly, or even on the minute to confirm wire transfers from customers, double check balances and others. In addition to that, accountans require the bank statements very often.
 
