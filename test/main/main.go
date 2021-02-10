@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/account"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/statement"
+	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/transaction"
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/web/utils"
 
 	"dev.azure.com/noon-homa/Kasikorn/_git/kasikorn/config"
@@ -12,9 +15,9 @@ import (
 )
 
 // Fill in!
-const accountNumber = `018-8-89233-7`
-const username = "thetower"
-const password = "tower2016"
+const accountNumber = ``
+const username = ""
+const password = ""
 
 func main() {
 
@@ -49,6 +52,7 @@ func main() {
 	} else {
 		log.Printf("Statement:\n%+v", *statement)
 	}
+
 }
 
 func getFromTo() (utils.KasikornDate, utils.KasikornDate) {
@@ -64,3 +68,4 @@ func getFromTo() (utils.KasikornDate, utils.KasikornDate) {
 
 	return from, to
 }
+
